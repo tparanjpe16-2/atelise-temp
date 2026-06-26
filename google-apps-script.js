@@ -19,9 +19,8 @@
 function doPost(e) {
   var sheet = SpreadsheetApp.openById('187c-MisRQpF_7IsQkBea5VEpqJ4ren-r5dFmoRAd4-o').getActiveSheet();
 
-  var data = JSON.parse(e.postData.contents);
-  var email = data.email;
-  var date = new Date(data.date);
+  var email = e.parameter.email;
+  var date = new Date(e.parameter.date);
 
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(['Email', 'Signup Date']);
