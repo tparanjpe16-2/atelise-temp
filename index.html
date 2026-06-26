@@ -352,30 +352,20 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
 
-      var hiddenForm = document.createElement('form');
-      hiddenForm.method = 'POST';
-      hiddenForm.action = APPS_SCRIPT_URL;
-      hiddenForm.target = 'hidden_iframe';
-      hiddenForm.style.display = 'none';
+      var iframe = document.getElementById('hidden_iframe');
+      iframe.src = APPS_SCRIPT_URL
+        + '?email=' + encodeURIComponent(val)
+        + '&date=' + encodeURIComponent(new Date().toISOString());
 
-      var emailField = document.createElement('input');
-      emailField.name = 'email';
-      emailField.value = val;
-      hiddenForm.appendChild(emailField);
-
-      var dateField = document.createElement('input');
-      dateField.name = 'date';
-      dateField.value = new Date().toISOString();
-      hiddenForm.appendChild(dateField);
-
-      document.body.appendChild(hiddenForm);
-      hiddenForm.submit();
-      document.body.removeChild(hiddenForm);
+      iframe.onload = function () {
+        document.getElementById('echo').textContent = val;
+        document.body.classList.add('done');
+      };
 
       setTimeout(function () {
         document.getElementById('echo').textContent = val;
         document.body.classList.add('done');
-      }, 1000);
+      }, 3000);
     });
 
     emailInput.addEventListener('input', function () {
