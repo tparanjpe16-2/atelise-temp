@@ -325,8 +325,9 @@
 
   <div class="footnote">&copy; 2026 Atelise &middot; Made-to-measure, worldwide</div>
 
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
   <script>
-    // TODO: Replace with your deployed Google Apps Script web app URL
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQ0Y8edy8RhzRLd5TMaS8XAbjxHRgUe7dLLApQX4y5majKe4jPdR36uViZBLn_v3OgA/exec';
 
     const form = document.getElementById('signupForm');
@@ -334,7 +335,7 @@
     const submitBtn = document.getElementById('submitBtn');
     const formError = document.getElementById('formError');
 
-    form.addEventListener('submit', async function (e) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
       formError.style.display = 'none';
 
@@ -351,24 +352,30 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
 
-      try {
-        await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams({
-            email: val,
-            date: new Date().toISOString()
-          })
-        });
+      var hiddenForm = document.createElement('form');
+      hiddenForm.method = 'POST';
+      hiddenForm.action = APPS_SCRIPT_URL;
+      hiddenForm.target = 'hidden_iframe';
+      hiddenForm.style.display = 'none';
 
+      var emailField = document.createElement('input');
+      emailField.name = 'email';
+      emailField.value = val;
+      hiddenForm.appendChild(emailField);
+
+      var dateField = document.createElement('input');
+      dateField.name = 'date';
+      dateField.value = new Date().toISOString();
+      hiddenForm.appendChild(dateField);
+
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
+      document.body.removeChild(hiddenForm);
+
+      setTimeout(function () {
         document.getElementById('echo').textContent = val;
         document.body.classList.add('done');
-      } catch (err) {
-        formError.textContent = 'Something went wrong. Please try again.';
-        formError.style.display = 'block';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Notify me';
-      }
+      }, 1000);
     });
 
     emailInput.addEventListener('input', function () {
