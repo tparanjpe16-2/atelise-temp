@@ -355,7 +355,7 @@
       var iframe = document.getElementById('hidden_iframe');
       iframe.src = APPS_SCRIPT_URL
         + '?email=' + encodeURIComponent(val)
-        + '&date=' + encodeURIComponent(new Date().toLocaleString('en-US', { timeZoneName: 'short' }));
+        + '&date=' + encodeURIComponent(new Date().toISOString());
 
       iframe.onload = function () {
         document.getElementById('echo').textContent = val;

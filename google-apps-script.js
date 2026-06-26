@@ -14,7 +14,7 @@ function doGet(e) {
   if (e.parameter.email) {
     var sheet = SpreadsheetApp.openById('187c-MisRQpF_7IsQkBea5VEpqJ4ren-r5dFmoRAd4-o').getActiveSheet();
     var email = e.parameter.email;
-    var date = e.parameter.date || new Date().toLocaleString();
+    var date = e.parameter.date || new Date().toISOString();
     sheet.appendRow([date, email]);
   }
 
@@ -26,7 +26,7 @@ function doGet(e) {
 function doPost(e) {
   var sheet = SpreadsheetApp.openById('187c-MisRQpF_7IsQkBea5VEpqJ4ren-r5dFmoRAd4-o').getActiveSheet();
   var email = e.parameter.email;
-  var date = e.parameter.date ? new Date(e.parameter.date) : new Date();
+  var date = e.parameter.date || new Date().toISOString();
   sheet.appendRow([date, email]);
 
   return ContentService
