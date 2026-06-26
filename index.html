@@ -335,6 +335,14 @@
     const submitBtn = document.getElementById('submitBtn');
     const formError = document.getElementById('formError');
 
+    function showError(msg) {
+      formError.textContent = msg;
+      formError.style.display = 'block';
+      emailInput.focus();
+      emailInput.style.outline = '2px solid #B23A3A';
+      emailInput.style.outlineOffset = '-2px';
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       formError.style.display = 'none';
@@ -342,10 +350,16 @@
       const val = emailInput.value.trim();
       const ok = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(val);
 
+      if (!val) {
+        showError('Please enter your email address.');
+        return;
+      }
+      if (!val.includes('@')) {
+        showError('Please include an "@" in the email address.');
+        return;
+      }
       if (!ok) {
-        emailInput.focus();
-        emailInput.style.outline = '2px solid #B23A3A';
-        emailInput.style.outlineOffset = '-2px';
+        showError('Please enter a valid email address (e.g. name@example.com).');
         return;
       }
 
