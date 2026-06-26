@@ -340,7 +340,7 @@
       formError.style.display = 'none';
 
       const val = emailInput.value.trim();
-      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      const ok = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(val);
 
       if (!ok) {
         emailInput.focus();
@@ -355,7 +355,7 @@
       var iframe = document.getElementById('hidden_iframe');
       iframe.src = APPS_SCRIPT_URL
         + '?email=' + encodeURIComponent(val)
-        + '&date=' + encodeURIComponent(new Date().toISOString());
+        + '&date=' + encodeURIComponent(new Date().toLocaleString('en-US', { timeZoneName: 'short' }));
 
       iframe.onload = function () {
         document.getElementById('echo').textContent = val;
